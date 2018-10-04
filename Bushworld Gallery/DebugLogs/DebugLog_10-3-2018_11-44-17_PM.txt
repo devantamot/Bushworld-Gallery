@@ -1,0 +1,23 @@
+DubugManager Initalized
+
+Created shapelist
+
+Left Mouse Pressed at: 324, 220
+
+Left Mouse Released at: 0, 0
+
+Left Mouse Pressed at: 262, 214
+
+Left Mouse Released at: 0, 0
+
+Left Mouse Pressed at: 428, 232
+
+Left Mouse Released at: 0, 0
+
+Left Mouse Pressed at: 413, 149
+
+Left Mouse Released at: 0, 0
+
+Left Mouse Pressed at: 398, 240
+
+Left Mouse Released at: 0, 0

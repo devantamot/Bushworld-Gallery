@@ -5,6 +5,9 @@ using UnityEngine.EventSystems;
 
 public class DrawManager : MonoBehaviour {
 
+    private int numWall;
+    private int numFloor;
+
     public enum Drawing { Floor, Wall }
 
     public Canvas UICanvas; // This will allow the user to 
@@ -24,58 +27,127 @@ public class DrawManager : MonoBehaviour {
     public Floor refFloor;
     public Wall refWall;
 
+    public Camera camera; // used for ray casting
+    private RaycastHit hitCanvas;
+    private Ray canvasRay;
 
 	// Use this for initialization
 	void Start () {
+
+        numFloor = 0;
+        numWall = 0;
+
         shapeList = new ArrayList();
         DebugManager.Log("Created shapelist");
-        outlineFloor = Instantiate<Floor>(refFloor);
-        outlineFloor.gameObject.transform.SetParent(this.gameObject.transform);
-        outlineFloor.gameObject.SetActive(false);
+
         outlineWall = Instantiate<Wall>(refWall);
         outlineWall.gameObject.transform.SetParent(this.gameObject.transform);
         outlineWall.gameObject.SetActive(false);
+
+        outlineFloor = Instantiate<Floor>(refFloor);
+        outlineFloor.gameObject.transform.SetParent(this.gameObject.transform);
+        outlineFloor.gameObject.SetActive(false);
+
         currentShape = outlineFloor;
     }
-	
-	// Update is called once per frame
-	void Update () {
+
+    void Update () {
 
         //TODO Check if the mouse is clicking on a button instead of trying to draw
-
-        //When the user presses down on the LEFT mouse ALso makes sure that the mouse is not over a UI element
-        if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+        if (EventSystem.current.IsPointerOverGameObject() == false)
         {
-            leftMousePressed = true;
-            LinitMouseX = Input.mousePosition.x;
-            LinitMouseZ = Input.mousePosition.y;
-            DebugManager.Log("Left Mouse Pressed at: "+LinitMouseX + ", " + LinitMouseZ);
-            currentShape.gameObject.SetActive(true);
-        }
+            //When the user presses down on the LEFT mouse ALso makes sure that the mouse is not over a UI element
+            if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
+            {
+                leftMousePressed = true;
 
-        //Once the LEFT mouse button has been pressed (Being dragged)
-        if (leftMousePressed && Input.GetMouseButton(0))
-        {
-            currentShape.Xpos = Input.mousePosition.x;
-            currentShape.Zpos = Input.mousePosition.y;
-            Debug.Log("X: " + Input.mousePosition.x + " Z: "+Input.mousePosition.y);
-            currentShape.Length = (LinitMouseX - Input.mousePosition.x)/100;
-            currentShape.Width = (LinitMouseZ - Input.mousePosition.y)/100;
-        }
+                currentShape.gameObject.SetActive(true);
 
-        //When the user relsease the LEFT mouse button 
-        if (Input.GetMouseButtonUp(0))
-        {
-            LfinMouseX = Input.mousePosition.x;
-            LfinMouseZ = Input.mousePosition.y;
-            DebugManager.Log("Left Mouse Released at: " + LfinMouseX + ", " + LfinMouseZ);
-        }
+                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
 
-        if (Input.GetMouseButtonDown(1))
-        {
-            Debug.Log("Pressed right click.");
-        }
+                if (Physics.Raycast(ray, out hitCanvas))
+                {
 
+                    LinitMouseX = hitCanvas.point.x;
+                    LinitMouseZ = hitCanvas.point.z;
+
+                    currentShape.Length = 0;
+                    currentShape.Width = 0;
+
+                    currentShape.Xpos = hitCanvas.point.x;
+                    currentShape.Zpos = hitCanvas.point.z;
+
+                    Debug.Log("POINT" + hitCanvas.point);
+                }
+
+
+                //Debug.Log("X: " + LinitMouseX + " Z: " + LinitMouseZ);
+                //Debug.Log("X: " + currentShape.Xpos + " Z: " + currentShape.Zpos);
+            }
+
+            //Once the LEFT mouse button has been pressed (Being dragged)
+            if (leftMousePressed && Input.GetMouseButton(0))
+            {
+                canvasRay = camera.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(canvasRay, out hitCanvas))
+                {
+
+                    currentShape.Length = (hitCanvas.point.x - LinitMouseX + currentShape.Length / 2) / this.transform.localScale.x;
+                    currentShape.Width = (hitCanvas.point.z - LinitMouseZ + currentShape.Width / 2) / this.transform.localScale.z;
+
+                    currentShape.Xpos = (hitCanvas.point.x + LinitMouseX) / 2;
+                    currentShape.Zpos = (hitCanvas.point.z + LinitMouseZ) / 2;
+
+                    Debug.Log("POINT" + hitCanvas.point);
+                }
+
+            }
+
+            //When the user relsease the LEFT mouse button 
+            if (Input.GetMouseButtonUp(0))
+            {
+                canvasRay = camera.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(canvasRay, out hitCanvas))
+                {
+
+                    currentShape.Length = (hitCanvas.point.x - LinitMouseX + currentShape.Length / 2) / this.transform.localScale.x;
+                    currentShape.Width = (hitCanvas.point.z - LinitMouseZ + currentShape.Width / 2) / this.transform.localScale.z;
+
+                    currentShape.Xpos = (hitCanvas.point.x + LinitMouseX) / 2;
+                    currentShape.Zpos = (hitCanvas.point.z + LinitMouseZ) / 2;
+
+                    Shape newShape = Instantiate(currentShape);
+                    newShape.gameObject.transform.SetParent(this.gameObject.transform);
+                    newShape.copyShape(currentShape);
+
+                    if (currentlyDrawing == Drawing.Floor)
+                    {
+                        newShape.name = "Floor #" + ++numFloor;
+                    }
+                    else
+                    {
+                        newShape.name = "Wall #" + ++numWall;
+                    }
+
+                    shapeList.Add(newShape);
+
+                    currentShape.gameObject.SetActive(false);
+                    Debug.Log("POINT" + hitCanvas.point);
+                }
+
+                leftMousePressed = false;
+
+                //DebugManager.Log("Left Mouse Released at: " + LfinMouseX + ", " + LfinMouseZ);
+            }
+
+            if (Input.GetMouseButtonDown(1))
+            {
+                Debug.Log("Pressed right click.");
+            }
+        }
+        
     }
 
     public void setDrawingTo(string d) {

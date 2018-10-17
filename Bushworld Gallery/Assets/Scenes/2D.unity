@@ -543,6 +543,7 @@ MonoBehaviour:
   UICanvas: {fileID: 2067979211}
   refFloor: {fileID: 114686899545992294, guid: 0c5f5edd1b6893547877623395542de8, type: 2}
   refWall: {fileID: 114219114885663876, guid: 3566079ef5618c840b1d3ebf9b3c2dca, type: 2}
+  camera: {fileID: 376605942}
 --- !u!64 &1012864074
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -605,7 +606,7 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1012864072}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 87.83048, y: 87.83048, z: 87.83048}
   m_Children: []

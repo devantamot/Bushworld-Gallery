@@ -21,6 +21,14 @@ public class Shape : MonoBehaviour {
         this.gameObject.transform.localScale = new Vector3(length, 0.01f, width);
     }
 
+    public void copyShape(Shape obj)
+    {
+        this.Xpos = obj.Xpos;
+        this.Zpos = obj.Zpos;
+        this.Length = obj.Length;
+        this.Width = obj.Width;
+    }
+
     public float Xpos {
         get { return xpos; }
         set { xpos = value; updatePosition(); }

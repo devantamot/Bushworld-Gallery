@@ -4,26 +4,22 @@ using UnityEngine;
 
 public class Shape : MonoBehaviour {
 
-    private float xpos, zpos, length, width, height;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
+    private float xpos, ypos, zpos, length, width, height;
 	
 	private void updatePosition()
     {
-        this.gameObject.transform.position = new Vector3(xpos, 0, zpos);
+        transform.position = new Vector3(xpos, ypos, zpos);
     }
 
     private void updateScale()
     {
-        this.gameObject.transform.localScale = new Vector3(length, 0.01f, width);
+        transform.localScale = new Vector3(length, height, width);
     }
 
     public void copyShape(Shape obj)
     {
         this.Xpos = obj.Xpos;
+        this.ypos = obj.Ypos;
         this.Zpos = obj.Zpos;
         this.Length = obj.Length;
         this.Width = obj.Width;
@@ -32,6 +28,12 @@ public class Shape : MonoBehaviour {
     public float Xpos {
         get { return xpos; }
         set { xpos = value; updatePosition(); }
+    }
+
+    public float Ypos
+    {
+        get { return ypos; }
+        set { ypos = value; updatePosition(); }
     }
 
     public float Zpos

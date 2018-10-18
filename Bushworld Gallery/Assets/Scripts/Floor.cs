@@ -4,16 +4,26 @@ using UnityEngine;
 
 public class Floor : Shape {
 
-    public static float defaultHeight = 0.5f;
+    public float twoDheight;
+    public float threeDheight;
 
     // Use this for initialization
     void Start()
     {
-        this.Height = defaultHeight;
+        twoDheight = 0.0001f;
+        threeDheight = 0.25f;
+        this.Height = twoDheight;
+        
     }
 
-    // Update is called once per frame
-    void Update () {
-		
-	}
+    public void threeDify()
+    {
+        this.Height = threeDheight;
+        this.Ypos = threeDheight / 2;
+    }
+
+    public void twoDify()
+    {
+        this.Height = twoDheight;
+    }
 }

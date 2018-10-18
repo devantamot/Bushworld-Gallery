@@ -8,7 +8,7 @@ public class DrawManager : MonoBehaviour {
     private int numWall;
     private int numFloor;
 
-    public enum Drawing { Floor, Wall }
+    public enum Drawing { Floor, Wall, Nothing }
 
     public Canvas UICanvas; // This will allow the user to 
     private Drawing currentlyDrawing; // Determines what the user is currently drawing
@@ -54,7 +54,7 @@ public class DrawManager : MonoBehaviour {
     void Update () {
 
         //TODO Check if the mouse is clicking on a button instead of trying to draw
-        if (EventSystem.current.IsPointerOverGameObject() == false)
+        if (EventSystem.current.IsPointerOverGameObject() == false && currentlyDrawing != Drawing.Nothing)
         {
             //When the user presses down on the LEFT mouse ALso makes sure that the mouse is not over a UI element
             if (Input.GetMouseButtonDown(0) && !EventSystem.current.IsPointerOverGameObject())
@@ -63,9 +63,9 @@ public class DrawManager : MonoBehaviour {
 
                 currentShape.gameObject.SetActive(true);
 
-                Ray ray = camera.ScreenPointToRay(Input.mousePosition);
+                canvasRay = camera.ScreenPointToRay(Input.mousePosition);
 
-                if (Physics.Raycast(ray, out hitCanvas))
+                if (Physics.Raycast(canvasRay, out hitCanvas))
                 {
 
                     LinitMouseX = hitCanvas.point.x;
@@ -77,12 +77,9 @@ public class DrawManager : MonoBehaviour {
                     currentShape.Xpos = hitCanvas.point.x;
                     currentShape.Zpos = hitCanvas.point.z;
 
-                    Debug.Log("POINT" + hitCanvas.point);
+                    //Debug.Log("POINT" + hitCanvas.point);
                 }
 
-
-                //Debug.Log("X: " + LinitMouseX + " Z: " + LinitMouseZ);
-                //Debug.Log("X: " + currentShape.Xpos + " Z: " + currentShape.Zpos);
             }
 
             //Once the LEFT mouse button has been pressed (Being dragged)
@@ -99,7 +96,7 @@ public class DrawManager : MonoBehaviour {
                     currentShape.Xpos = (hitCanvas.point.x + LinitMouseX) / 2;
                     currentShape.Zpos = (hitCanvas.point.z + LinitMouseZ) / 2;
 
-                    Debug.Log("POINT" + hitCanvas.point);
+                    //Debug.Log("POINT" + hitCanvas.point);
                 }
 
             }
@@ -134,7 +131,7 @@ public class DrawManager : MonoBehaviour {
                     shapeList.Add(newShape);
 
                     currentShape.gameObject.SetActive(false);
-                    Debug.Log("POINT" + hitCanvas.point);
+                    //Debug.Log("POINT" + hitCanvas.point);
                 }
 
                 leftMousePressed = false;
@@ -163,6 +160,38 @@ public class DrawManager : MonoBehaviour {
             currentShape = outlineFloor;
         }
         DebugManager.Log("Set Drawing to: " + d);
+    }
+
+    public void threeDifiy()
+    {
+        currentlyDrawing = Drawing.Nothing;
+        for(int i=0; i < shapeList.Count; i++)
+        {
+            if(shapeList[i] is Wall)
+            {
+                ((Wall)shapeList[i]).threeDify();
+            }
+            else
+            {
+                ((Floor)shapeList[i]).threeDify();
+            }
+        }
+    }
+
+    public void twoDifiy()
+    {
+        currentlyDrawing = Drawing.Wall;
+        for (int i = 0; i < shapeList.Count; i++)
+        {
+            if (shapeList[i] is Wall)
+            {
+                ((Wall)shapeList[i]).twoDify();
+            }
+            else
+            {
+                ((Floor)shapeList[i]).twoDify();
+            }
+        }
     }
 
     private Shape getCurrentDrawing()

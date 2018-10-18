@@ -4,15 +4,30 @@ using UnityEngine;
 
 public class Wall : Shape {
 
-    public static float defaultHeight = 10.0f;
+    public float twoDheight;
+    public float threeDheight;
 
 	// Use this for initialization
 	void Start () {
-        this.Height = defaultHeight;
-	}
-	
-	// Update is called once per frame
-	void Update () {
-		
-	}
+        twoDheight = 0.01f;
+        threeDheight = 2.0f;
+        this.Ypos = 0.5f;
+        this.Height = twoDheight;
+        Debug.Log("WALL " + this.Height);       
+        Debug.Log("WALL "+this.Ypos);
+    }
+
+    public void threeDify()
+    {
+        Debug.Log("FUCK ME");
+        this.Ypos = threeDheight / 2;
+        this.Height = threeDheight;
+        Debug.Log(threeDheight+ " "+this.Ypos);
+    }
+
+    public void twoDify()
+    {
+        this.Height = twoDheight;
+        this.Ypos = 0.5f;
+    }
 }

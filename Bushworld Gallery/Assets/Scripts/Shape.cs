@@ -5,10 +5,12 @@ using UnityEngine;
 public class Shape : MonoBehaviour {
 
     private float xpos, ypos, zpos, length, width, height;
+    public MeshRenderer meshRend;
 	
 	private void updatePosition()
     {
         transform.position = new Vector3(xpos, ypos, zpos);
+        meshRend = this.GetComponent<MeshRenderer>();
     }
 
     private void updateScale()
@@ -23,6 +25,11 @@ public class Shape : MonoBehaviour {
         this.Zpos = obj.Zpos;
         this.Length = obj.Length;
         this.Width = obj.Width;
+    }
+
+    public void changeMaterial(Material m)
+    {
+        meshRend.sharedMaterial = m;
     }
 
     public float Xpos {

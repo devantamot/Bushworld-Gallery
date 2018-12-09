@@ -61,12 +61,56 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\CrossPlatformInput\Scripts\AxisTouchButton.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\ButtonHandler.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\CrossPlatformInputManager.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\InputAxisScrollbar.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\Joystick.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\MobileControlRig.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\PlatformSpecific\MobileInput.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\PlatformSpecific\StandaloneInput.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\TiltInput.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\TouchPad.cs" />
+    <Compile Include="Assets\CrossPlatformInput\Scripts\VirtualInput.cs" />
     <Compile Include="Assets\Scripts\AdjustView.cs" />
     <Compile Include="Assets\Scripts\DebugManager.cs" />
     <Compile Include="Assets\Scripts\DrawManager.cs" />
+    <Compile Include="Assets\Scripts\FirstPersonController.cs" />
     <Compile Include="Assets\Scripts\Floor.cs" />
+    <Compile Include="Assets\Scripts\FPCam.cs" />
+    <Compile Include="Assets\Scripts\FPVController.cs" />
+    <Compile Include="Assets\Scripts\HeadBob.cs" />
+    <Compile Include="Assets\Scripts\MouseLook.cs" />
+    <Compile Include="Assets\Scripts\RigidbodyFirstPersonController.cs" />
     <Compile Include="Assets\Scripts\Shape.cs" />
+    <Compile Include="Assets\Scripts\Tracer.cs" />
     <Compile Include="Assets\Scripts\Wall.cs" />
+    <Compile Include="Assets\Utility\ActivateTrigger.cs" />
+    <Compile Include="Assets\Utility\AlphaButtonClickMask.cs" />
+    <Compile Include="Assets\Utility\AutoMobileShaderSwitch.cs" />
+    <Compile Include="Assets\Utility\AutoMoveAndRotate.cs" />
+    <Compile Include="Assets\Utility\CameraRefocus.cs" />
+    <Compile Include="Assets\Utility\CurveControlledBob.cs" />
+    <Compile Include="Assets\Utility\DragRigidbody.cs" />
+    <Compile Include="Assets\Utility\DynamicShadowSettings.cs" />
+    <Compile Include="Assets\Utility\EventSystemChecker.cs" />
+    <Compile Include="Assets\Utility\FollowTarget.cs" />
+    <Compile Include="Assets\Utility\ForcedReset.cs" />
+    <Compile Include="Assets\Utility\FOVKick.cs" />
+    <Compile Include="Assets\Utility\FPSCounter.cs" />
+    <Compile Include="Assets\Utility\LerpControlledBob.cs" />
+    <Compile Include="Assets\Utility\ObjectResetter.cs" />
+    <Compile Include="Assets\Utility\ParticleSystemDestroyer.cs" />
+    <Compile Include="Assets\Utility\PlatformSpecificContent.cs" />
+    <Compile Include="Assets\Utility\SimpleActivatorMenu.cs" />
+    <Compile Include="Assets\Utility\SimpleMouseRotator.cs" />
+    <Compile Include="Assets\Utility\SmoothFollow.cs" />
+    <Compile Include="Assets\Utility\TimedObjectActivator.cs" />
+    <Compile Include="Assets\Utility\TimedObjectDestructor.cs" />
+    <Compile Include="Assets\Utility\WaypointCircuit.cs" />
+    <Compile Include="Assets\Utility\WaypointProgressTracker.cs" />
+    <None Include="Assets\CrossPlatformInput\CrossPlatformInputGuidelines.txt" />
+    <None Include="Assets\FirstPersonCharacter\FirstPersonCharacterGuidelines.txt" />
     <Reference Include="UnityEditor.StandardEvents">
       <HintPath>C:/Users/tamot/OneDrive/Documents/UMD/FIRE270/Gallery Stuff/Bushworld-Gallery/Bushworld Gallery/Library/ScriptAssemblies/UnityEditor.StandardEvents.dll</HintPath>
     </Reference>

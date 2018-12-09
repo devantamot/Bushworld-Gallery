@@ -10,7 +10,7 @@ public class Wall : Shape {
 	// Use this for initialization
 	void Start () {
         twoDheight = 0.01f;
-        threeDheight = 2.0f;
+        threeDheight = 5.0f;
         this.Ypos = 0.5f;
         this.Height = twoDheight;
         Debug.Log("WALL " + this.Height);       
@@ -19,7 +19,6 @@ public class Wall : Shape {
 
     public void threeDify()
     {
-        Debug.Log("FUCK ME");
         this.Ypos = threeDheight / 2;
         this.Height = threeDheight;
         Debug.Log(threeDheight+ " "+this.Ypos);

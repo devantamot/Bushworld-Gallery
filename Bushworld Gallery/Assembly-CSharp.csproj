@@ -73,14 +73,14 @@
     <Compile Include="Assets\CrossPlatformInput\Scripts\TouchPad.cs" />
     <Compile Include="Assets\CrossPlatformInput\Scripts\VirtualInput.cs" />
     <Compile Include="Assets\Scripts\AdjustView.cs" />
+    <Compile Include="Assets\Scripts\CenterAim.cs" />
     <Compile Include="Assets\Scripts\DebugManager.cs" />
     <Compile Include="Assets\Scripts\DrawManager.cs" />
     <Compile Include="Assets\Scripts\FirstPersonController.cs" />
     <Compile Include="Assets\Scripts\Floor.cs" />
-    <Compile Include="Assets\Scripts\FPCam.cs" />
-    <Compile Include="Assets\Scripts\FPVController.cs" />
     <Compile Include="Assets\Scripts\HeadBob.cs" />
     <Compile Include="Assets\Scripts\MouseLook.cs" />
+    <Compile Include="Assets\Scripts\Painting.cs" />
     <Compile Include="Assets\Scripts\RigidbodyFirstPersonController.cs" />
     <Compile Include="Assets\Scripts\Shape.cs" />
     <Compile Include="Assets\Scripts\Tracer.cs" />

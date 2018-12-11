@@ -14,6 +14,7 @@ public class DrawManager : MonoBehaviour {
     private Drawing currentlyDrawing; // Determines what the user is currently drawing
     private Shape currentShape; // The current shape the user is drawing
     private ArrayList shapeList;
+    private List<Painting> paintings;
 
     private bool leftMousePressed;
     private bool rightMousePressed;
@@ -39,6 +40,7 @@ public class DrawManager : MonoBehaviour {
 
         shapeList = new ArrayList();
         DebugManager.Log("Created shapelist");
+        paintings = new List<Painting>();
 
         outlineWall = Instantiate<Wall>(refWall);
         outlineWall.gameObject.transform.SetParent(this.gameObject.transform);
@@ -176,6 +178,10 @@ public class DrawManager : MonoBehaviour {
                 ((Floor)shapeList[i]).threeDify();
             }
         }
+        for (int i = 0; i < paintings.Count; i++)
+        {
+            paintings[i].gameObject.SetActive(true);
+        }
     }
 
     public void twoDifiy()
@@ -192,6 +198,15 @@ public class DrawManager : MonoBehaviour {
                 ((Floor)shapeList[i]).twoDify();
             }
         }
+        for (int i = 0; i < paintings.Count; i++)
+        {
+            paintings[i].gameObject.SetActive(false);
+        }
+    }
+
+    public void addPainting(Painting p)
+    {
+        paintings.Add(p);
     }
 
     private Shape getCurrentDrawing()

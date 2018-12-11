@@ -13,11 +13,13 @@ public class AdjustView : MonoBehaviour {
 	void Start ()
     {
         camera = this.GetComponent<Camera>();
-        fpsc.gameObject.SetActive(false);
+        Debug.Log(fpsc);
 	}
 	
 	public void setTo2DTopDown()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         camera.gameObject.SetActive(true);
         fpsc.setCamera(false);
         fpsc.gameObject.SetActive(false);
@@ -31,6 +33,8 @@ public class AdjustView : MonoBehaviour {
 
     public void setTo3DView()
     {
+        Cursor.visible = true;
+        Cursor.lockState = CursorLockMode.None;
         camera.gameObject.SetActive(true);
         fpsc.setCamera(false);
         fpsc.gameObject.SetActive(false);
@@ -44,9 +48,12 @@ public class AdjustView : MonoBehaviour {
 
     public void setToFPV()
     {
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         setTo3DView();
         fpsc.gameObject.SetActive(true);
         camera.gameObject.SetActive(false);
+        Debug.Log("HERE HAHA");
         fpsc.setCamera(true);
     }
 }

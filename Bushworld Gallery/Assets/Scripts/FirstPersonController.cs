@@ -44,17 +44,28 @@ public class FirstPersonController : MonoBehaviour
     private AudioSource m_AudioSource;
 
     public List<Material> pallet;
-    public Tracer tracer;
-    private int tracerLoc;
+    public List<Painting> paintings;
+    public Tracer textureTracer;
+    public Tracer paintTracer;
+    public AdjustView av;
+    public Canvas fpsCanvas;
+    public DrawManager dm;
+
+    private bool UIEnabled;
+    private int tracerLocTexture;
+    private int tracerLocPaint;
     private RaycastHit hitTarget;
     private Ray rayTarget;
     private float rtVal;
+    private float dVal;
+    private float lastTime;
 
     // Use this for initialization
     private void Start()
     {
         m_CharacterController = GetComponent<CharacterController>();
         m_Camera = this.GetComponentInChildren<Camera>();
+        Debug.Log(m_Camera);
         m_Camera.gameObject.SetActive(false);
         m_OriginalCameraPosition = m_Camera.transform.localPosition;
         m_FovKick.Setup(m_Camera);
@@ -65,9 +76,10 @@ public class FirstPersonController : MonoBehaviour
         m_Jumping = false;
         m_AudioSource = GetComponent<AudioSource>();
         m_MouseLook.Init(transform, m_Camera.transform);
-        tracerLoc = 0;
-
-
+        tracerLocTexture = tracerLocPaint = 0;
+        this.gameObject.SetActive(false);
+        UIEnabled = false;
+        lastTime = Time.time;
     }
 
 
@@ -81,32 +93,80 @@ public class FirstPersonController : MonoBehaviour
             m_Jump = CrossPlatformInputManager.GetButtonDown("Jump");
         }
 
-        rtVal = CrossPlatformInputManager.GetAxis("Right Trigger");
-
-        if (rtVal!=0.0)
+        if (CrossPlatformInputManager.GetButtonDown("X Button"))
         {
-            rayTarget = m_Camera.ScreenPointToRay(Input.mousePosition);
+            UIEnabled = !UIEnabled;
+            fpsCanvas.gameObject.SetActive(UIEnabled);
+        }
 
-            if (Physics.Raycast(rayTarget, out hitTarget))
+        if (CrossPlatformInputManager.GetButtonDown("B Button"))
+        {
+            av.setTo2DTopDown();
+        }
+
+        if (UIEnabled)
+        {
+            rtVal = CrossPlatformInputManager.GetAxis("Right Trigger");
+
+            if (rtVal != 0.0)
             {
-                //changes the material color of whatever it hit.
-                (hitTarget.collider.gameObject.GetComponentInChildren<MeshRenderer>()).sharedMaterial = pallet[tracerLoc];
-                
+                rayTarget = m_Camera.ScreenPointToRay(new Vector3(Screen.width / 2, (Screen.height / 2), 0));
+
+                if (Physics.Raycast(rayTarget, out hitTarget))
+                {
+                    //changes the material color of whatever it hit.
+                    (hitTarget.collider.gameObject.GetComponentInChildren<MeshRenderer>()).sharedMaterial = pallet[tracerLocTexture];
+
+                }
+            }
+
+            if (CrossPlatformInputManager.GetButtonDown("A Button"))
+            {
+                rayTarget = m_Camera.ScreenPointToRay(new Vector3(Screen.width / 2, (Screen.height / 2), 0));
+
+                if (Physics.Raycast(rayTarget, out hitTarget))
+                {
+                    Vector3 dir = rayTarget.direction;
+                    Painting p = Instantiate(paintings[tracerLocPaint]);
+                    p.transform.position = hitTarget.point;
+                    p.transform.rotation = Quaternion.FromToRotation(Vector3.up, new Vector3(0,hitTarget.point.y,0));
+                    dm.addPainting(p); // Sliding into those dm's
+                }
+            }
+
+            if (CrossPlatformInputManager.GetButtonDown("Right Bumper"))
+            {
+                // makes sure it doesn't go past the textures list length 
+                tracerLocTexture = (tracerLocTexture + 1) % pallet.Count; 
+                textureTracer.updateSelection(tracerLocTexture);
+            }
+
+            if (CrossPlatformInputManager.GetButtonDown("Left Bumper"))
+            {
+                // makes sure it doesn't go under 0 
+                tracerLocTexture = ((tracerLocTexture - 1) + pallet.Count) % pallet.Count; 
+                textureTracer.updateSelection(tracerLocTexture);
+            }
+
+            dVal = CrossPlatformInputManager.GetAxis("DVert");
+
+            //Debug.Log(Time.time - lastTime);
+            if (Time.time - lastTime > 0.1125f)
+            {
+
+                if (dVal < 0)
+                {
+                    tracerLocPaint = (tracerLocPaint + 1) % paintings.Count; 
+                    paintTracer.updateSelection(tracerLocPaint);
+                }
+                else if (dVal > 0)
+                {
+                    tracerLocPaint = ((tracerLocPaint - 1) + paintings.Count) % paintings.Count;
+                    paintTracer.updateSelection(tracerLocPaint);
+                }
+                lastTime = Time.time;
             }
         }
-
-        if(CrossPlatformInputManager.GetButtonDown("Right Bumper"))
-        {
-            tracerLoc = (tracerLoc + 1) % pallet.Count; // makes sure it doesn't go past the textures list length 
-            tracer.updateSelection(tracerLoc);
-        }
-
-        if (CrossPlatformInputManager.GetButtonDown("Left Bumper")) 
-        {
-            tracerLoc = ((tracerLoc -1) + pallet.Count) % pallet.Count; // makes sure it doesn't go under 0 
-            tracer.updateSelection(tracerLoc);
-        }
-
         if (!m_PreviouslyGrounded && m_CharacterController.isGrounded)
         {
             StartCoroutine(m_JumpBob.DoBobCycle());
@@ -297,6 +357,7 @@ public class FirstPersonController : MonoBehaviour
 
     public void setCamera(bool b)
     {
+        UIEnabled = b;
         m_Camera.gameObject.SetActive(b);
     }
 }
